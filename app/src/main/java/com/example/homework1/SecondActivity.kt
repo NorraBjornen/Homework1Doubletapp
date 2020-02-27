@@ -1,33 +1,22 @@
 package com.example.homework1
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
-import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 
-class MainActivity : AppCompatActivity() {
-
+class SecondActivity : AppCompatActivity() {
     private var counter = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_second)
 
-        val textView = findViewById<TextView>(R.id.txt)
+        val textView = findViewById<TextView>(R.id.txt2)
 
-        counter = savedInstanceState?.getInt(COUNTER_ID, 0) ?: 0
-        textView.text = counter.toString()
+        val value = intent.extras?.getInt(MainActivity.COUNTER_ID) ?: counter
 
-        val button = findViewById<Button>(R.id.btn)
-
-        button.setOnClickListener {
-            val intent = Intent(this, SecondActivity::class.java)
-            intent.putExtra(COUNTER_ID, counter)
-            startActivity(intent)
-        }
+        textView.text = (value*value).toString()
 
         Log.d(LIFECYCLE_TAG, "onCreate")
     }
@@ -64,16 +53,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        counter = savedInstanceState.getInt(COUNTER_ID)
+        counter = savedInstanceState.getInt(MainActivity.COUNTER_ID)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putInt(COUNTER_ID, counter + 1)
+        outState.putInt(MainActivity.COUNTER_ID, counter)
         super.onSaveInstanceState(outState)
     }
 
-    companion object {
-        const val COUNTER_ID = "counter_id"
-        const val LIFECYCLE_TAG = "MainActivity"
+    companion object{
+        const val LIFECYCLE_TAG = "SecondActivity"
     }
 }
